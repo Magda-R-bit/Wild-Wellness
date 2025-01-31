@@ -62,3 +62,30 @@ main {
 .navbar {
     background-color: var(--light-green);
 }
+
+/* Footer */
+
+footer {
+    background-color: var(--light-green);
+    padding: 85px 0;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.social-icon {
+    height: 2rem;
+    margin: 1rem;
+}
+
+.active {
+    border-bottom: 2px solid var(--green);
+    font-weight: 450;
+}
+
+
