@@ -1,7 +1,7 @@
 {% load static %} 
 
 <header>
-    
+    {% with request.resolver_match.url_name as url_name %}
   <nav class="navbar navbar-expand-lg shadow p-3 mb-5 rounded">
     <div class="container-fluid">
       <a class="navbar-brand me-auto" href="#">Wild Wellness</a>
@@ -17,24 +17,32 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <li class="nav-item">
-              <a class="nav-link mx-lg-2 active" aria-current="page" href="{% url 'home' %}">Home</a>
+              <a class="nav-link mx-lg-2 {% if url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link mx-lg-2" href="#">About</a>
             </li>
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="#">Register</a>
+              <a class="nav-link mx-lg-2 {% if url_name == 'accounts_logout' %}active{% endif %}" href="/accounts/logout/">Logout</a>
             </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link mx-lg-2 {% if url_name == 'accounts_signup' %}active{% endif %}" href="/accounts/signup/
+              ">Register</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
-      <a href="#" class="login-button">Login</a>
+      <a href="/accounts/login/" class="login-button {% if url_name == 'accounts_login' %}active{% endif %}">Login</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
         aria-controls="offcanvasNavbar">
         <span class="navbar-toggler-icon"></span>
       </button>
       
+      
     </div>
   </nav>
- 
+  {% endwith %}
 </header>
