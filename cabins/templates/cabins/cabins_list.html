@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Available Cabins</h2>
+
+  <div class="row">
+    {% for cabin in cabins %}
+    <div class="col-md-4 mb-4"> 
+      <a href="" class="cabins" aria-label="Click to view {{ cabin.name }}">
+        <div class="card">
+          <img src="{{ cabin.image.url }}" class="card-img-top" alt="{{ cabin.name }}" />
+          <div class="card-body">
+            <h5 class="card-title">{{ cabin.name }}</h5>
+            <p class="card-text">
+              {{ cabin.description|truncatewords:20 }}
+            </p>
+            <p class="card-text">
+              <small class="text-muted">Price: ${{ cabin.price_per_night }}/night</small>
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}
+
+

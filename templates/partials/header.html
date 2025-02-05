@@ -20,7 +20,7 @@
               <a class="nav-link mx-lg-2 {% if url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="#">About</a>
+              <a class="nav-link mx-lg-2 {% if url_name == 'cabins_list' %}active{% endif %}" aria-current="page" href="{% url 'cabins_list' %}">Cabins</a>
             </li>
             {% if request.user.is_authenticated %}
             <li class="nav-item">
