@@ -7,18 +7,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Cabin',
+            name="Cabin",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('location', models.CharField(max_length=200)),
-                ('price_per_night', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('is_available', models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("location", models.CharField(max_length=200)),
+                (
+                    "price_per_night",
+                    models.DecimalField(decimal_places=2, max_digits=10),
+                ),
+                ("is_available", models.BooleanField(default=True)),
             ],
         ),
     ]

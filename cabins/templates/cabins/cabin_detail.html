@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Cabin Detail - {{cabin.name}}{% endblock %}
+
+{% block content %} 
+
+<div class="container">
+    <h1>{{ cabin.name }}</h1>
+    <p>{{ cabin.descreption }}</p>
+    <p>Price per night: ${{ cabin.price_per_night }}</p>
+
+</div>
+
+{% endblock %}
