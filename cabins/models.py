@@ -1,5 +1,7 @@
 from django.db import models
 
+from djrichtextfield.models import RichTextField
+
 
 class Cabin(models.Model):
     name = models.CharField(max_length=200)

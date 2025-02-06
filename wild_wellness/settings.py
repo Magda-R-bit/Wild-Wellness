@@ -53,9 +53,29 @@ INSTALLED_APPS = [
     # Adds on
     'crispy_forms',
     'crispy_bootstrap5',
+    'cloudinary',
+    'cloudinary_storage',
+    'djrichtextfield'
 ]
 
 SITE_ID = 1
+
+
+DJRICHTEXTFIELD_CONFIG = {
+    "js": ["https://cdn.quilljs.com/1.3.6/quill.js"],
+    "css": {
+        "all": ["https://cdn.quilljs.com/1.3.6/quill.snow.css"]
+    },
+    "toolbar": [
+        ["bold", "italic", "underline", "strike"],
+        [{"header": 1}, {"header": 2}],
+        [{"list": "ordered"}, {"list": "bullet"}],
+        [{"align": []}],
+        [{"font": []}],
+    ],
+}
+    
+    
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -172,6 +192,10 @@ LOGIN_REDIRECT_URL = '/'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Cloudinary Settings
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUIDNARY_URL = os.environ.get('CLOUDINARY_URL')
 
 
 # Default primary key field type
