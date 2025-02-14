@@ -6,9 +6,28 @@
 
 <div class="container">
     <h1>{{ cabin.name }}</h1>
-    <p>{{ cabin.descreption }}</p>
+    <img src="{{ cabin.image.url }}" alt="{{ cabin.name }}" class="img-fluid">
+    <p>{{ cabin.detailed_description|safe }}</p>
     <p>Price per night: ${{ cabin.price_per_night }}</p>
+    <p><strong>Max Guests:</strong> {{ cabin.max_guests }}</p>
+
+    {% if cabin.bedroom_image %}
+    <h3>Bedroom</h3>
+    <img src="{{ cabin.bedroom_image.url }}" alt="Bedroom of {{ cabine.name }}" class="img-fluid">
+    {% endif %}
+
+    {% if cabin.bathroom_image %}
+    <h3>Bathroom</h3>
+    <img src="{{ cabin.bathroom_image.url }}" alt="Bathroom of {{ cabine.name }}" class="img-fluid">
+    {% endif %}
+
+    {% if cabin.kitchen_image %}
+    <h3>Kitchen</h3>
+    <img src="{{ cabin.kitchen_image.url }}" alt="Kitchen of {{ cabine.name }}" class="img-fluid">
+    {% endif %}
 
 </div>
+
+
 
 {% endblock %}

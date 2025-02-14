@@ -13,11 +13,12 @@ import os
 from pathlib import Path
 import dj_database_url
 
+if os.path.exists('env.py'):
+    import env
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-if os.path.exists('env.py'):
-    import env
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -62,20 +63,17 @@ SITE_ID = 1
 
 
 DJRICHTEXTFIELD_CONFIG = {
-    "js": ["https://cdn.quilljs.com/1.3.6/quill.js"],
-    "css": {
-        "all": ["https://cdn.quilljs.com/1.3.6/quill.snow.css"]
-    },
-    "toolbar": [
-        ["bold", "italic", "underline", "strike"],
-        [{"header": 1}, {"header": 2}],
-        [{"list": "ordered"}, {"list": "bullet"}],
-        [{"align": []}],
-        [{"font": []}],
-    ],
+    'js': ['//cdn.tiny.cloud/1/h5utrifn9o4y0oux2m61oz2lh3lfn4klbjyc9vgtm46rubdh/tinymce/5/tinymce.min.js'],
+    'init_template': 'djrichtextfield/init/tinymce.js',
+    'settings': {
+        'menubar': 'favs file edit view insert format tools table help',
+        'plugins': 'advlist lists link image',
+        'toolbar': 'bold italic | link image | bullist numlist',
+        'width': 700,
+        'height': 400
+    }
 }
-    
-    
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -195,7 +193,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Cloudinary Settings
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-CLOUIDNARY_URL = os.environ.get('CLOUDINARY_URL')
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
 
 
 # Default primary key field type
