@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Booking List</h2>
+<ul>
+  {% for booking in bookings %}
+    <li>{{ booking.item_name }}:  {{ booking.check_in }} to {{ booking.check_out }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
