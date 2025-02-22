@@ -1,13 +1,17 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<h2>Create a New Booking</h2>
-<form method="post">
-  
-  {% csrf_token %}
-  {{ form.as_p }}
+{% block content %}
+<div class="container- text-center form mt-5">
+    <h2>{% if form.instance.pk %}Update Booking{% else %}Create Booking{% endif %}</h2>
 
-  <button type="submit">Book</button>
-</form>
-<a href="{% url 'booking_create' %}">Create a new booking</a>
-<a href="{% url 'booking_list' %}">Back to Bookings</a>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-success">{% if form.instance.pk %}Update{% else %}Create{% endif %}</button>
+    </form>
+
+    <br>
+    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Back to Booking List</a>
+</div>
 {% endblock %}

@@ -1,9 +1,28 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<h2>Booking List</h2>
-<ul>
-  {% for booking in bookings %}
-    <li>{{ booking.item_name }}:  {{ booking.check_in }} to {{ booking.check_out }}</li>
-  {% endfor %}
-</ul>
+{% block content %}
+
+    <h2>Your Bookings</h2>
+
+    {% if bookings %}
+        {% for booking in bookings %}
+            <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                <img src="{{ booking.cabin.image.url }}" alt="{{ booking.cabin.name }}" width="150">
+                <p><strong>Booking by:</strong> {{ booking.user.username }}</p>
+                <strong>Cabin:</strong> {{ booking.cabin }} <br>
+                <strong>Check-in:</strong> {{ booking.check_in }} <br>
+                <strong>Check-out:</strong> {{ booking.check_out }} <br>
+                <strong>Total Price:</strong> ${{ booking.total_price }} <br>
+                <a href="{% url 'booking_update' booking.pk %}" class="btn btn-outline-warning btn-sm">
+                    <i class="bi bi-pencil-square"></i> <strong>Edit</strong></a> | 
+                <a href="{% url 'booking_delete' booking.pk %}" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-x-circle"></i> <strong>Delete</strong></a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no bookings yet.</p>
+    {% endif %}
+
+    <a href="{% url 'booking_create' %}" class="btn btn-primary">Create a new booking</a>
+
 {% endblock %}

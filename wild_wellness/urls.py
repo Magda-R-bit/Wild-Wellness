@@ -23,6 +23,7 @@ urlpatterns = [
     path('djrichtextfield/', include('djrichtextfield.urls')),
     path('', include('home.urls')),
     path('cabins/', include('cabins.urls')),
-    path('', include('booking.urls')),
+    path('booking/', include('booking.urls')),
+    
    
 ]

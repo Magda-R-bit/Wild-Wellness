@@ -52,12 +52,13 @@ INSTALLED_APPS = [
     'cabins',
     'booking',
     
+    
     # Adds on
     'crispy_forms',
     'crispy_bootstrap5',
     'cloudinary',
     'cloudinary_storage',
-    'djrichtextfield'
+    'djrichtextfield',
 ]
 
 SITE_ID = 1
