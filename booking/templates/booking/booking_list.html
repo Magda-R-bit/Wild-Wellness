@@ -2,6 +2,14 @@
 
 {% block content %}
 
+{% if messages %}
+<ul>
+    {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
     <h2>Your Bookings</h2>
 
     {% if bookings %}

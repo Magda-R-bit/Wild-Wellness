@@ -112,3 +112,15 @@ a {
 .img-fluid {
     margin-bottom: 30px;
 }
+
+/* User notification messages */
+
+.alert {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    width: 500px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    text-align: center;
+}

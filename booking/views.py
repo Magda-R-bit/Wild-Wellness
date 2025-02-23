@@ -32,13 +32,12 @@ class BookingCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         
-        print("Form Data:", form.cleaned_data)
-        if not form.cleaned_data.get('cabin'):  # Prevents missing cabin errors
-            messages.error(self.request, "Please select a cabin.")
-            return self.form_invalid(form)  # Redirect back to form
-    
+        response = super().form_valid(form)
+        
         messages.success(self.request, 'Your booking has been successfully submitted!')
-        return super().form_valid(form)  # Automatically redirects after successful save
+        messages.success(self.request, 'A confirmation email has been sent to your email address.')  # Show success message
+    
+        return response  # Automatically redirects after successful save
     
 
     
@@ -51,6 +50,12 @@ class BookingUpdate(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user)  # Allow only user bookings to be updated
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+    
+        messages.success(self.request, 'Your booking has been successfully updated!')
+        return response
 
 # View to delete a booking
 class BookingDelete(LoginRequiredMixin, DeleteView):
@@ -60,4 +65,10 @@ class BookingDelete(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user)  # Allow only user bookings to be deleted
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+    
+        messages.success(self.request, 'Your booking has been successfully deleted!')
+        return response
 
