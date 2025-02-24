@@ -98,9 +98,29 @@ footer a:hover {
     border: 3px solid var(--green);
 }
 
+
+h1, h2 {
+    margin-top: 30px;
+}
+
 .form-control:focus {
     box-shadow: none;
     border: 3px solid var(--green);
+}
+.form-control {
+    margin: 10px 0 12px 150px;
+    width: 200px;
+}
+
+#id_remember {
+    margin-left: 150px;
+    margin-right: 10px;
+
+}
+
+.form-check-label {
+    display: flex;
+    align-items: center;
 }
 
 a {
@@ -111,4 +131,16 @@ a {
 
 .img-fluid {
     margin-bottom: 30px;
+}
+
+/* User notification messages */
+
+.alert {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    width: 500px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    text-align: center;
 }

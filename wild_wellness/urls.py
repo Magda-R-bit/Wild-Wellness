@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from wild_wellness.views import handler404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +26,8 @@ urlpatterns = [
     path('cabins/', include('cabins.urls')),
     path('booking/', include('booking.urls')),
     
+    
    
 ]
+
+handler404 = 'wild_wellness.views.handler404'
