@@ -25,9 +25,12 @@
     <h3>Kitchen</h3>
     <img src="{{ cabin.kitchen_image.url }}" alt="Kitchen of {{ cabine.name }}" class="img-fluid">
     {% endif %}
+   
 
 </div>
 
-
+<div class="text-center mb-3">
+    <a href="{% url 'cabins_list' %}" class="btn btn-success">Back to Cabins</a>
+</div>
 
 {% endblock %}
