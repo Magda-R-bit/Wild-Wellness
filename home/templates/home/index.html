@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 {% if messages %}
@@ -9,6 +11,76 @@
     {% endfor %}
 </ul>
 {% endif %}
+
+<div id="carouselExampleRide" class="carousel slide" data-bs-ride="true" style="max-width: 900px; max-height:500px; margin: auto;">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'images/carousel/squirrel2.jpg' %}" class="d-block w-100" alt="squirrel2" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/breath.jpg' %}" class="d-block w-100" alt="breath" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/meditation.jpg' %}" class="d-block w-100" alt="meditation" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/deer.jpg' %}" class="d-block w-100" alt="deer" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/morning.jpg' %}" class="d-block w-100" alt="morning" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/owl.jpg' %}" class="d-block w-100" alt="owl" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/WildGarlic.jpg' %}" class="d-block w-100" alt="WildGarlic" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/fox.jpg' %}" class="d-block w-100" alt="fox" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/lake.jpg' %}" class="d-block w-100" alt="lake" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/dinner.jpg' %}" class="d-block w-100" alt="dinner" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/lunch.jpg' %}" class="d-block w-100" alt="lunch" style="object-fit: cover; height: 500px;">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/carousel/WildFish.jpg' %}" class="d-block w-100" alt="WildFish" style="object-fit: cover; height: 500px;">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<section class="hero text-center">
+    <div class="container">
+        <h1>Welcome to Wild Wellness Escape</h1>
+        <p class="lead">
+            Embark on a transformative journey where nature, relaxation, and adventure meet. Our Wild Wellness Adventure 
+            is more than just a getaway it's an opportunity to reconnect with yourself in the heart of nature.
+        </p>
+        <p>
+            Immerse yourself in breathtaking landscapes, unwind with rejuvenating wellness activities, and discover the power 
+            of the great outdoors to heal your mind, body, and spirit.
+        </p>
+        <p>
+            Whether you're seeking relaxation through mindful meditation, energizing outdoor excursions, or simply a peaceful 
+            retreat to recharge, our unique wellness experiences offer something for everyone. 
+        </p>
+        <p><strong>Step outside your routine and into a world where nature nourishes your soul.</strong></p>
+        <a href="{% url 'cabins_list' %}" class="btn btn-success mb-4">Explore Now</a>
+    </div>
+</section>
 
 
 {% endblock %}
