@@ -1,17 +1,62 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+{% if messages %}
+<ul>
+    {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <div class="container- text-center form mt-5">
-    <h2>{% if form.instance.pk %}Update Booking{% else %}Create Booking{% endif %}</h2>
+  <h2>
+    {% if form.instance.pk %}Update Booking{% else %}Create Booking{% endif %}
+  </h2>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+  <form method="post" id="booking-form">
+    {% csrf_token %} 
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">
+      {% if form.instance.pk %}Update{% else %}Create{% endif %}
+    </button>
+  </form>
 
-        <button type="submit" class="btn btn-success">{% if form.instance.pk %}Update{% else %}Create{% endif %}</button>
-    </form>
-
-    <br>
-    <a href="{% url 'booking_list' %}" class="btn btn-secondary">Back to Booking List</a>
+  <br />
+  <a href="{% url 'booking_list' %}" class="btn btn-secondary"
+    >Back to Booking List</a
+  >
 </div>
+
+<script>
+    document.getElementById("check-availability").addEventListener("click", function () {
+        var cabin = document.getElementById("id_cabin").value;
+        var checkIn = document.getElementById("check_in").value;
+        var checkOut = document.getElementById("check_out").value;
+  
+        if (!cabin || !checkIn || !checkOut) {
+            document.getElementById("availability-result").innerText = "⚠️ Please select a cabin and dates!";
+            return;
+        }
+  
+        fetch(`/booking/availability/?cabin=${cabin}&check_in=${checkIn}&check_out=${checkOut}`)
+          .then(response => response.json())
+          .then(data => {
+              document.getElementById("availability-result").innerText =
+                  data.available
+                      ? "✅ This cabin is available! You can proceed with booking."
+                      : "❌ This cabin is already booked for the selected dates.";
+
+              if (data.available) {
+                  document.getElementById("booking-form").style.display = "block";
+              } else {
+                  document.getElementById("booking-form").style.display = "none";
+              }
+          })
+            .catch(error => {
+                console.error("⚠️ Error checking availability:", error);
+                document.getElementById("availability-result").innerText = "⚠️ Error checking availability!";
+            });
+    });
+  </script>
+
 {% endblock %}

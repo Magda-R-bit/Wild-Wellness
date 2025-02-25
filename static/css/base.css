@@ -31,6 +31,18 @@ main {
 
 
 /* Header */
+.check-button {
+    background-color: var(--green);
+    color: var(--white);
+    font-size: 16px;
+    padding: 4px 6px;
+    margin-left: 18px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: 0.4s background-color;
+    border: none;
+}
+
 .login-button {
     background-color: var(--green);
     color: var(--white);
@@ -39,13 +51,15 @@ main {
     border-radius: 50px;
     text-decoration: none;
     transition: 0.4s background-color;
+    border: none;
 }
 
-.login-button:hover {
+.login-button:hover,
+.check-button:hover {
     background-color: var(--hover-color);
 }
 
-.navbar-toggler {
+.navbar-toggler{
     border: none;
     font-size: 1.25rem;
 }
@@ -92,7 +106,7 @@ footer a:hover {
 
 .form {
     width: 500px;
-    height: 550px;
+    height: 580px;
     margin: 60px auto;
     border-width: 3px;
     border: 3px solid var(--green);
@@ -101,6 +115,8 @@ footer a:hover {
 
 h1, h2 {
     margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .form-control:focus {
@@ -127,6 +143,9 @@ a {
     color: black;
 }
 
+li {
+    list-style-type: none;
+}
 /* Images */
 
 .img-fluid {
