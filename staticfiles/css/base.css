@@ -164,3 +164,16 @@ li {
     text-align: center;
 }
 
+/* Review */
+
+.star {
+    font-size: 30px;
+    cursor: pointer;
+    color: lightgray;
+    transition: color 0.3s;
+}
+
+.star.selected,
+.star:hover {
+    color: gold;
+}

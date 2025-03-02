@@ -2,10 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, ListView, CreateView, UpdateView, DeleteView
+import json
 from django.http import JsonResponse
+from django.db.models import Q
 from .models import Cabin, Review
-from .forms import ReviewForm
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 class CabinsListView(ListView):
@@ -18,64 +21,91 @@ class CabinDetail(DetailView):
     model = Cabin
     template_name = "cabins/cabin_detail.html"
     context_object_name = "cabin"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reviews"] = Review.objects.filter(cabin=self.object, approved=True)
+        return context
 
-
+    
+# Review List
 class ReviewListView(ListView):
     model = Review
-    template_name = "reviews/review_list.html"
     context_object_name = "reviews"
-    
-    def get_queryset(self):
-        cabin_id = self.kwargs["cabin_id"]
-        if self.request.user.is_authenticated:
-            return Review.objects.filter(cabin=cabin_id).filter(models.Q(approved=True) | models.Q(user=self.request.user))
-        return Review.objects.filter(cabin=cabin_id).filter(approved=True)
-    
+    template_name = "reviews/review_list.html"
 
+    def get_queryset(self):
+        """Get all approved reviews for a specific cabin"""
+        cabin = get_object_or_404(Cabin, id=self.kwargs["cabin_id"])
+        return Review.objects.filter(cabin=cabin, approved=True).order_by("-created_at")
+
+    def render_to_response(self, context, **response_kwargs):
+        """Return JSON if it's an AJAX request, otherwise return HTML"""
+        if self.request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            reviews = [
+                {
+                    "id": review.id,
+                    "user": review.user.username,
+                    "rating": review.rating,
+                    "comment": review.comment,
+                    "approved": review.approved,
+                }
+                for review in context["reviews"]
+            ]
+            return JsonResponse({"reviews": reviews})
+        return super().render_to_response(context, **response_kwargs)
+    
+# Create Review
 class ReviewCreateAJAXView(LoginRequiredMixin, CreateView):
     model = Review
-    form_class = ReviewForm
-   
-    
+    fields = ["rating", "comment"]
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.cabin = get_object_or_404(Cabin, id=self.kwargs["cabin_id"])
         review = form.save()
-       
+
         return JsonResponse({
+            "id": review.id,
             "user": review.user.username,
             "rating": review.rating,
             "comment": review.comment,
-            "created": review.created_at.strftime("%Y-%m-%D, %H:%M"),
             "approved": review.approved,
-       })
+        })
+
+    def form_invalid(self, form):
+        return JsonResponse({"error": "Invalid data"}, status=400)
+
+
+# Update Review
+class ReviewEditAJAXView(LoginRequiredMixin, UpdateView):
+    model = Review
+    fields = ["comment"]
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         
+        if self.object.user != request.user:
+            return JsonResponse({"error": "Unauthorized"}, status=403)
 
-class ReviewUpdateView(LoginRequiredMixin, UpdateView):
-    model = Review
-    form_class = ReviewForm
-    template_name = "reviews/review_form.html"
-    
-    
-    def get_queryset(self):
-        return Review.objects.filter(user=self.request.user)
-    
-    
-    def form_valid(self, form):
-        messages.success(self.request, "✅ Review updated successfully!")
-        return super().form_valid(form)
-    
+        data = json.loads(request.body)
+        self.object.comment = data.get("comment", self.object.comment)
+        self.object.save()
 
-class ReviewDeleteView(LoginRequiredMixin, DeleteView):
+        return JsonResponse({"comment": self.object.comment})
+
+
+# Delete Review
+class ReviewDeleteAJAXView(LoginRequiredMixin, DeleteView):
     model = Review
-    template_name = "reviews/review_confirm_delete.html"
-    success_url = reverse_lazy("cabin_list")
-    
-    def get_queryset(self):
-        return Review.objects.filter(user=self.request.user)
-    
+    http_method_names = ["delete"]
+
     def delete(self, request, *args, **kwargs):
-        messages.success(request, "✅ Review deleted successfully!")
-        return super().delete(request, *args, **kwargs)
-    
-    
+        self.object = self.get_object()
+
+        if self.object.user != request.user:
+            return JsonResponse({"error": "Unauthorized"}, status=403)
+
+        self.object.delete()
+        return JsonResponse({"success": True})

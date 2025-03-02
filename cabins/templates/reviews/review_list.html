@@ -1,0 +1,25 @@
+<div id="reviews-list">
+  {% for review in reviews %}
+      <div id="review-{{ review.id }}" class="review container mb-5">
+          <strong>{{ review.user }}</strong>
+          <p>
+              {% for _ in ""|rjust:review.rating %} ⭐ {% endfor %}
+          </p>
+          <p class="review-comment">{{ review.comment }}</p>
+          <p><small>Posted on {{ review.created_at|date:"Y-m-d H:i" }}</small></p>
+          {% if not review.approved %}
+              <span class="pending">🫸 Pending Approval...</span>
+          {% endif %}
+          {% if review.user.username == request.user %}
+          <button class="btn btn-success edit-review-btn" data-id="{{ review.id }}">Edit</button>
+          <button class="btn btn-danger delete-review-btn" data-id="{{ review.id }}">Delete</button>
+          {% endif %}
+
+          <hr />
+      </div>
+  {% endfor %}
+</div>
+
+
+
+

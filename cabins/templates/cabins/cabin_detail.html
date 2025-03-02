@@ -1,36 +1,66 @@
-{% extends "base.html" %}
-
-{% block title %}Cabin Detail - {{cabin.name}}{% endblock %}
-
-{% block content %} 
+{% extends "base.html" %} {% block title %}Cabin Detail -
+{{cabin.name}}{%endblock %} {% block content %} {% load static %}
 
 <div class="container">
-    <h1>{{ cabin.name }}</h1>
-    <img src="{{ cabin.image.url }}" alt="{{ cabin.name }}" class="img-fluid">
-    <p>{{ cabin.detailed_description|safe }}</p>
-    <p>Price per night: ${{ cabin.price_per_night }}</p>
-    <p><strong>Max Guests:</strong> {{ cabin.max_guests }}</p>
+  <h1 class="name text-start">{{ cabin.name }}</h1>
+  <img src="{{ cabin.image.url }}" alt="{{ cabin.name }}" class="img-fluid" />
+  <p>{{ cabin.detailed_description|safe }}</p>
+  <p>Price per night: ${{ cabin.price_per_night }}</p>
+  <p><strong>Max Guests:</strong> {{ cabin.max_guests }}</p>
 
-    {% if cabin.bedroom_image %}
-    <h3>Bedroom</h3>
-    <img src="{{ cabin.bedroom_image.url }}" alt="Bedroom of {{ cabine.name }}" class="img-fluid">
-    {% endif %}
-
-    {% if cabin.bathroom_image %}
-    <h3>Bathroom</h3>
-    <img src="{{ cabin.bathroom_image.url }}" alt="Bathroom of {{ cabine.name }}" class="img-fluid">
-    {% endif %}
-
-    {% if cabin.kitchen_image %}
-    <h3>Kitchen</h3>
-    <img src="{{ cabin.kitchen_image.url }}" alt="Kitchen of {{ cabine.name }}" class="img-fluid">
-    {% endif %}
-   
-
+  {% if cabin.bedroom_image %}
+  <h3>Bedroom</h3>
+  <img
+    src="{{ cabin.bedroom_image.url }}"
+    alt="Bedroom of {{ cabine.name }}"
+    class="img-fluid"
+  />
+  {% endif %} {% if cabin.bathroom_image %}
+  <h3>Bathroom</h3>
+  <img
+    src="{{ cabin.bathroom_image.url }}"
+    alt="Bathroom of {{ cabine.name }}"
+    class="img-fluid"
+  />
+  {% endif %} {% if cabin.kitchen_image %}
+  <h3>Kitchen</h3>
+  <img
+    src="{{ cabin.kitchen_image.url }}"
+    alt="Kitchen of {{ cabine.name }}"
+    class="img-fluid"
+  />
+  {% endif %}
 </div>
 
 <div class="text-center mb-3">
-    <a href="{% url 'cabins_list' %}" class="btn btn-success">Back to Cabins</a>
+  <a href="{% url 'cabins_list' %}" class="btn btn-success">Back to Cabins</a>
 </div>
+
+<!-- Reviews Section -->
+
+<div class="container mt-5">
+  <h3>Reviews for {{ cabin.name }}</h3>
+  <p>Please leave your review 😊!</p>
+</div>
+
+{% if user.is_authenticated %}
+<form id="review-form" class="container" action="{% url 'add_review' cabin.id %}" method="POST">
+  {% csrf_token %}
+  <div class="star-rating">
+      {% for i in "12345" %}
+          <span class="star" data-value="{{ i }}">&starf;</span>
+      {% endfor %}
+  </div>
+  <input type="hidden" name="rating" id="rating-value">
+  <textarea name="comment" id="review-comment" rows="4" placeholder="Write a review..." required></textarea>
+  <div class="text-start mt-3 mb-4"><button type="submit" class="btn btn-success">Submit Review</button></div>
+</form>
+{% endif %}
+
+<!-- Include Reviews List -->
+{% include 'reviews/review_list.html' %}
+
+
+<script src="{% static 'js/reviews.js' %}"></script>
 
 {% endblock %}
