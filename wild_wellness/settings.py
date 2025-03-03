@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'djrichtextfield',
+    'django_extensions',
 ]
 
 SITE_ID = 1
