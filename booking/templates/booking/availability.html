@@ -5,7 +5,7 @@
 
     <form method="GET">
         {{ form.as_p }}
-        <button type="submit" class="btn btn-success mb-4 mt-2">Search</button>
+        <button type="submit" class="btn btn-success mb-2 w-50 w-md-50 w-lg-25">Search</button>
     </form>
 
     {% if available is not None %}
@@ -20,7 +20,7 @@
     {% endif %}
 
     
-    <a href="{% url 'booking_list' %}" class="btn btn-secondary mt-2 mb-4">Back to Calendar</a>
+    <a href="{% url 'booking_list' %}" class="btn btn-secondary mb-2 w-50 w-md-50 w-lg-25">Back to Calendar</a>
     
 </div>
 {% endblock %}
