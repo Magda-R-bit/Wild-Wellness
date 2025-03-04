@@ -105,11 +105,15 @@ footer a:hover {
 /* Form */
 
 .form {
-    width: 500px;
-    height: 580px;
-    margin: 60px auto;
+    width: 90%;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    box-sizing: border-box;
     border-width: 3px;
     border: 3px solid var(--green);
+    border-radius: 7px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -124,19 +128,37 @@ h1, h2 {
     border: 3px solid var(--green);
 }
 .form-control {
-    margin: 10px 0 12px 150px;
-    width: 200px;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 250px;
+    padding: 8px;
+    box-sizing: border-box;
+    display: block;
+    font-size: 0.9rem;
+   
 }
 
-#id_remember {
-    margin-left: 150px;
-    margin-right: 10px;
 
+.form-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    width: 100%;
 }
+
 
 .form-check-label {
     display: flex;
     align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    margin: 10px;
+}
+
+.form-check-input {
+    width: 1rem;
+    height: 1rem;
 }
 
 a {
