@@ -204,6 +204,49 @@ li {
 
 /* Calendar */
 
+#calendar {
+    width: 100%;
+    margin: 0 auto;
+}
+.fc .fc-col-header-cell {
+    background-color: var(--light-green);
+    padding: 8px 0;
+}
+
+.fc .fc-daygrid-day-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+    font-weight: bold;
+}
+
+@media (max-width: 765px) {
+    #calendar {
+        max-width: 80%;
+        margin: 0 auto;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.4rem;
+    }
+
+    .fc .fc-button {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .fc .fc-daygrid-event {
+        font-size: 0.75rem;
+        padding: 3px;
+    }
+
+    .fc .fc-daygrid-day-number {
+        font-size: 0.85rem;
+    }
+}
+
+
 
 @media (max-width: 414px) {
     #calendar {
@@ -230,4 +273,5 @@ li {
     #calendar {
         max-width: 270px;
     }
+
 }
