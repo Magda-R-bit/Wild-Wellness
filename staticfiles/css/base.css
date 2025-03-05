@@ -180,10 +180,12 @@ li {
     background-color: var(--green);
     color: var(--white);
     border: none;
-    width: 500px;
-    margin: 0 auto;
-    margin-bottom: 10px;
+    width: 90%;
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 10px 20px;
     text-align: center;
+    border-radius: 7px;
 }
 
 /* Review */
@@ -198,4 +200,34 @@ li {
 .star.selected,
 .star:hover {
     color: gold;
+}
+
+/* Calendar */
+
+
+@media (max-width: 414px) {
+    #calendar {
+        max-width: 300px;
+    }
+
+    #calendar .fc-toolbar-title {
+        font-size: 1.1rem !important;
+    }
+
+    #calendar .fc-button {
+        padding: 0.1rem 0.4rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    #calendar .fc-daygrid-event {
+        font-size: 0.65rem !important;
+        padding: 1px !important;
+    }
+
+}
+
+@media (max-width: 375px) {
+    #calendar {
+        max-width: 270px;
+    }
 }
