@@ -5,7 +5,14 @@ from django.contrib import messages
 
 @admin.register(Cabin)
 class CabinAdmin(admin.ModelAdmin):
-    list_display = ("name", "location", "price_per_night", "is_available", "max_guests", "image")
+    list_display = (
+        "name",
+        "location",
+        "price_per_night",
+        "is_available",
+        "max_guests",
+        "image",
+    )
 
 
 @admin.register(Review)
@@ -22,6 +29,11 @@ class ReviewAdmin(admin.ModelAdmin):
                 review.approved = True
                 review.save()
                 count += 1
-        
-        self.message_user(request, f"{count} ✅ review successfully approved!", messages.SUCCESS)
+
+        self.message_user(
+            request,
+            f"{count} ✅ review successfully approved!",
+            messages.SUCCESS,
+        )
+
     approve_reviews.short_description = "Approve selected reviews"

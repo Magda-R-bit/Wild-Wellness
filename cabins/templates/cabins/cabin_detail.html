@@ -1,13 +1,11 @@
-{% extends "base.html" %} {% block title %}
-Cabin Detail -
+{% extends "base.html" %} {% block title %} Cabin Detail -
 {{cabin.name}}{%endblock %} {% block content %} {% load static %}
-
-
+ 
 {% if messages %}
 <ul>
-    {% for message in messages %}
-        <li class="alert alert-success">{{ message }}</li>
-    {% endfor %}
+  {% for message in messages %}
+  <li class="alert alert-success">{{ message }}</li>
+  {% endfor %}
 </ul>
 {% endif %}
 
@@ -46,12 +44,8 @@ Cabin Detail -
   <a href="{% url 'cabins_list' %}" class="btn btn-success">Back to Cabins</a>
 </div>
 
-
-
 <!-- Reviews Section -->
 {% include 'reviews/review_form.html' %}
 {% include 'reviews/review_list.html' %}
-
-
 
 {% endblock %}

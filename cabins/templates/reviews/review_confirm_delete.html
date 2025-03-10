@@ -1,25 +1,24 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <div class="container text-center form mt-5">
   <h2>⚠️ Delete Review</h2>
-  
+
   <p>❌ Are you sure you want to delete this review?</p>
-  <h4><strong>{{ review.user.username }} rated:</strong>
+  <h4>
+    <strong>{{ review.user.username }} rated:</strong>
     <span class="review-stars">
-      {% for _ in ""|rjust:review.rating %}
-        ⭐
-      {% endfor %}
-    </span></h4>
+      {% for _ in ""|rjust:review.rating %} ⭐ {% endfor %}
+    </span>
+  </h4>
   <p><strong>"{{ review.comment }}"</strong></p>
   <small>Posted on: {{ review.created_at|date:"F d, Y" }}</small>
-  <br><br>
+  <br /><br />
   <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="{% url 'cabin_detail' review.cabin.id %}" class="btn btn-secondary">Cancel</a>
+    <a href="{% url 'cabin_detail' review.cabin.id %}" class="btn btn-secondary"
+      >Cancel</a
+    >
   </form>
-
 </div>
 {% endblock %}
