@@ -53,6 +53,27 @@ class BookingCreate(LoginRequiredMixin, CreateView):
         return initial
 
     def form_valid(self, form):
+        cabin = form.cleaned_data["cabin"]
+        check_in = form.cleaned_data["check_in"]
+        check_out = form.cleaned_data["check_out"]
+
+        # Check for overlapping bookings for the selected cabin and dates
+        overlapping_booking = Booking.objects.filter(
+            cabin=cabin,
+            # Check if check-in date is before the checkout
+            check_in__lt=check_out,
+            # Check if checkout date is after the check-in
+            check_out__gt=check_in
+        ).exists()
+
+        if overlapping_booking:
+            # If there is an overlapping booking, show an error
+            messages.error(
+                self.request,
+                "❌ This cabin is already booked for the selected dates!"
+            )
+            return self.form_invalid(form)
+
         form.instance.user = self.request.user
         response = super().form_valid(form)
         messages.success(
