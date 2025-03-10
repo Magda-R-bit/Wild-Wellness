@@ -57,7 +57,6 @@ class BookingCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         response = super().form_valid(form)
         messages.success(self.request, '✅ Your booking has been successfully submitted!')
-        messages.success(self.request, '🕊️ A confirmation email has been sent to your email address.')  # Show success message
     
         return response  # Automatically redirects after successful save
     
