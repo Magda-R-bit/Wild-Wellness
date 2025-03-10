@@ -1,25 +1,114 @@
-<div id="reviews-list">
-  {% for review in reviews %}
-      <div id="review-{{ review.id }}" class="review container mb-5">
-          <strong>{{ review.user }}</strong>
-          <p>
-              {% for _ in ""|rjust:review.rating %} ⭐ {% endfor %}
-          </p>
-          <p class="review-comment">{{ review.comment }}</p>
-          <p><small>Posted on {{ review.created_at|date:"Y-m-d H:i" }}</small></p>
-          {% if not review.approved %}
-              <span class="pending">🫸 Pending Approval...</span>
-          {% endif %}
-          {% if review.user.username == request.user %}
-          <button class="btn btn-success edit-review-btn" data-id="{{ review.id }}">Edit</button>
-          <button class="btn btn-danger delete-review-btn" data-id="{{ review.id }}">Delete</button>
-          {% endif %}
+<div class="container">
+  <h2>Reviews for {{ cabin.name }}</h2>
 
-          <hr />
+  {% if reviews.exists %}
+  <ul>
+    {% for review in cabin.reviews.all %}
+    {% if review.approved or review.user == request.user %}
+    <li>
+      <strong>{{ review.user.username }} rated:</strong>
+      <span class="review-stars">
+        {% for _ in ""|rjust:review.rating %}
+          ⭐
+        {% endfor %}
+      </span>
+      <p>{{ review.comment }}</p>
+      <small>Posted on: {{ review.created_at|date:"F d, Y" }}</small>
+
+    {% if not review.approved %}
+      <span class="pending">🫸 Pending Approval...</span>
+      <div class="mt-3">
+        {% csrf_token %}
+        <button
+          class="btn btn-warning edit-review-btn"
+          data-id="{{ review.pk }}"
+          data-comment="{{ review.comment }}"
+          data-rating="{{ review.rating }}"
+          data-bs-toggle="modal"
+          data-bs-target="#updateReviewModal"
+        >
+          Update Review
+        </button>
+        <a href="{% url 'review_delete' review.pk %}" class="btn btn-danger"
+          >Delete</a
+        >
       </div>
-  {% endfor %}
+      {% endif %}
+    </li>
+    <hr />
+    {% endif %}
+    {% endfor %}
+  </ul>
+  {% else %}
+<p class="text-center">No reviews yet. Be the first to write one!</p>
+  {% endif %}
 </div>
 
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  id="updateReviewModal"
+  aria-labelledby="updateReviewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateReviewModalLabel">Update Review</h5>
+      </div>
+      <div class="modal-body">
+        <form id="edit-review-form" method="POST" action="">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_comment">Comment:</label>
+            <textarea
+              name="comment"
+              id="id_comment"
+              class="form-control"
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="id_rating">Rating:</label>
+            <input
+              type="number"
+              name="rating"
+              id="id_rating"
+              class="form-control"
+              min="1"
+              max="5"
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".edit-review-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            const reviewId = this.getAttribute("data-id");
+            const reviewComment = this.getAttribute("data-comment");
+            const reviewRating = this.getAttribute("data-rating");
 
+            const form = document.getElementById("edit-review-form");
 
+            if (form) {  // Check if the form exists
+                form.action = `/cabins/review/${reviewId}/edit/`;  
+                form.querySelector("#id_comment").value = reviewComment;
+                form.querySelector("#id_rating").value = reviewRating;
+            } else {
+                console.error("Edit review form not found!");
+            }
+        });
+    });
+});
+</script>

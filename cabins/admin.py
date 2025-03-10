@@ -23,5 +23,5 @@ class ReviewAdmin(admin.ModelAdmin):
                 review.save()
                 count += 1
         
-        self.message_user(request, f"{count} reviews successfully approved! 🕊️ Email notification sent!", messages.SUCCESS)
+        self.message_user(request, f"{count} ✅ review successfully approved!", messages.SUCCESS)
     approve_reviews.short_description = "Approve selected reviews"

@@ -1,5 +1,15 @@
-{% extends "base.html" %} {% block title %}Cabin Detail -
+{% extends "base.html" %} {% block title %}
+Cabin Detail -
 {{cabin.name}}{%endblock %} {% block content %} {% load static %}
+
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+        <li class="alert alert-success">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <div class="container">
   <h1 class="name text-start">{{ cabin.name }}</h1>
@@ -36,31 +46,12 @@
   <a href="{% url 'cabins_list' %}" class="btn btn-success">Back to Cabins</a>
 </div>
 
+
+
 <!-- Reviews Section -->
-
-<div class="container mt-5">
-  <h3>Reviews for {{ cabin.name }}</h3>
-  <p>Please leave your review 😊!</p>
-</div>
-
-{% if user.is_authenticated %}
-<form id="review-form" class="container" action="{% url 'add_review' cabin.id %}" method="POST">
-  {% csrf_token %}
-  <div class="star-rating">
-      {% for i in "12345" %}
-          <span class="star" data-value="{{ i }}">&starf;</span>
-      {% endfor %}
-  </div>
-  <input type="hidden" name="rating" id="rating-value">
-  <textarea name="comment" id="review-comment" rows="4" placeholder="Write a review..." required></textarea>
-  <div class="text-start mt-3 mb-4"><button type="submit" class="btn btn-success">Submit Review</button></div>
-</form>
-{% endif %}
-
-<!-- Include Reviews List -->
+{% include 'reviews/review_form.html' %}
 {% include 'reviews/review_list.html' %}
 
 
-<script src="{% static 'js/reviews.js' %}"></script>
 
 {% endblock %}
