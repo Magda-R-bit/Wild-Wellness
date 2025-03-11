@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block title %} Cabin Detail -
-{{cabin.name}}{%endblock %} {% block content %} {% load static %}
- 
+{% extends "base.html" %} {% block title %} Cabin Detail - {{ cabin.name }}
+{%endblock %} {% block content %} {% load static %}
+
 {% if messages %}
 <ul>
   {% for message in messages %}
@@ -13,28 +13,29 @@
   <h1 class="name text-start">{{ cabin.name }}</h1>
   <img src="{{ cabin.image.url }}" alt="{{ cabin.name }}" class="img-fluid" />
   <p>{{ cabin.detailed_description|safe }}</p>
-  <p>Price per night: ${{ cabin.price_per_night }}</p>
+  <p><strong>Location:</strong> {{ cabin.location }}</p>
+  <p><strong>Price per night:</strong> ${{ cabin.price_per_night }}</p>
   <p><strong>Max Guests:</strong> {{ cabin.max_guests }}</p>
 
   {% if cabin.bedroom_image %}
   <h3>Bedroom</h3>
   <img
     src="{{ cabin.bedroom_image.url }}"
-    alt="Bedroom of {{ cabine.name }}"
+    alt="Bedroom of {{ cabin.name }}"
     class="img-fluid"
   />
   {% endif %} {% if cabin.bathroom_image %}
   <h3>Bathroom</h3>
   <img
     src="{{ cabin.bathroom_image.url }}"
-    alt="Bathroom of {{ cabine.name }}"
+    alt="Bathroom of {{ cabin.name }}"
     class="img-fluid"
   />
   {% endif %} {% if cabin.kitchen_image %}
   <h3>Kitchen</h3>
   <img
     src="{{ cabin.kitchen_image.url }}"
-    alt="Kitchen of {{ cabine.name }}"
+    alt="Kitchen of {{ cabin.name }}"
     class="img-fluid"
   />
   {% endif %}
@@ -45,7 +46,7 @@
 </div>
 
 <!-- Reviews Section -->
-{% include 'reviews/review_form.html' %}
-{% include 'reviews/review_list.html' %}
+{% include 'reviews/review_form.html' %} 
+{% include 'reviews/review_list.html'%}
 
 {% endblock %}

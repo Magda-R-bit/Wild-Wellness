@@ -26,4 +26,7 @@ class Booking(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Booking by {self.user.username} for {self.cabin.name} from {self.check_in} to {self.check_out}"
+        return (
+            f"Booking by {self.user.username} for {self.cabin.name} "
+            f"from {self.check_in} to {self.check_out}"
+        )
