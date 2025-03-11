@@ -1,6 +1,4 @@
-{% extends 'base.html' %} {% block content %}
-
-{% if messages %}
+{% extends 'base.html' %} {% block content %} {% if messages %}
 <ul>
   {% for message in messages %}
   <li class="alert alert-success">{{ message }}</li>
@@ -14,8 +12,7 @@
   </h2>
 
   <form method="post" id="booking-form">
-    {% csrf_token %} 
-    {{ form.as_p }}
+    {% csrf_token %} {{ form.as_p }}
 
     <button type="submit" class="btn btn-success mb-2 w-50 w-md-50 w-lg-25">
       {% if form.instance.pk %}Update{% else %}Create{% endif %}
@@ -28,7 +25,6 @@
     class="btn btn-secondary mb-2 w-50 w-md-50 w-lg-25"
     >Back to Booking List
   </a>
-
 </div>
 
 {% endblock %}
