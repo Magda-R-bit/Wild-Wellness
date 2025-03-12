@@ -6,9 +6,6 @@ from .models import Booking
 import datetime
 from datetime import date, timedelta
 from booking.forms import BookingForm
-from django.core.files.uploadedfile import SimpleUploadedFile
-from io import BytesIO
-from PIL import Image
 
 
 class BookingModelTest(TestCase):
@@ -19,6 +16,7 @@ class BookingModelTest(TestCase):
         self.cabin = Cabin.objects.create(
             name="Test Cabin", price_per_night=100, is_available=True
         )
+
         self.booking = Booking.objects.create(
             user=self.user,
             cabin=self.cabin,
@@ -52,7 +50,7 @@ class BookingFormTest(TestCase):
             "check_out": date.today() + timedelta(days=5),  # After check-in
         }
         valid_form = BookingForm(data=valid_data)
-        self.assertTrue(valid_form.is_valid())  # Expecting True
+        self.assertTrue(valid_form.is_valid())
 
     def test_booking_form_invalid_dates(self):
         """Test if the form correctly rejects past
@@ -61,7 +59,7 @@ class BookingFormTest(TestCase):
         #  Case 1: Check-in date in the past
         past_date_data = {
             "cabin": self.cabin.id,
-            "check_in": date.today() - timedelta(days=1),  # Past date
+            "check_in": date.today() - timedelta(days=1),
             "check_out": date.today() + timedelta(days=2),
         }
         past_date_form = BookingForm(data=past_date_data)
@@ -69,7 +67,7 @@ class BookingFormTest(TestCase):
 
         self.assertIn(
             "__all__", past_date_form.errors
-        )  # Check form-wide error
+        )
         self.assertIn(
             "⚠️ Check-in date cannot be in the past!",
             past_date_form.errors["__all__"],
@@ -79,7 +77,7 @@ class BookingFormTest(TestCase):
         invalid_range_data = {
             "cabin": self.cabin.id,
             "check_in": date.today() + timedelta(days=3),
-            "check_out": date.today() + timedelta(days=2),  # Before check-in
+            "check_out": date.today() + timedelta(days=2),
         }
         invalid_range_form = BookingForm(data=invalid_range_data)
         self.assertFalse(invalid_range_form.is_valid())
@@ -95,14 +93,20 @@ class BookingFormTest(TestCase):
 
 class BookingViewsTest(TestCase):
     def setUp(self):
-        """Set up user, cabin with image, and booking."""
+        """Set up user, cabin (without image), and booking."""
         self.user = User.objects.create_user(
             username="testuser", password="password"
         )
         self.client.login(username="testuser", password="password")
 
-        # Create a mock image for the cabin
-        self.cabin = self._create_cabin_with_image()
+        # Create cabin witout an image
+        # (images are stored in the cloudinary)
+        self.cabin = Cabin.objects.create(
+            name="Test Cabin",
+            price_per_night=100,
+            is_available=True,
+            image="default.jpg",
+        )
 
         # Create a booking
         self.booking = Booking.objects.create(
@@ -112,35 +116,25 @@ class BookingViewsTest(TestCase):
             check_out=datetime.date.today() + datetime.timedelta(days=3),
         )
 
-    def _create_cabin_with_image(self):
-        """Helper function to create a cabin with an image."""
-        image = Image.new(
-            "RGB", (600, 335), color=(255, 0, 0)
-        )  # Create a red image
-        image_io = BytesIO()
-        image.save(image_io, format="PNG")
-        image_io.seek(0)
-        mock_image = SimpleUploadedFile(
-            "test_image.png", image_io.read(), content_type="image/png"
-        )
-
-        cabin = Cabin.objects.create(
-            name="Test Cabin", price_per_night=100, is_available=True
-        )
-        cabin.image.save(
-            "test_image.png", mock_image
-        )  # Save the image to the cabin
-        return cabin
-
     def test_booking_list_view(self):
-        """Test that the booking list view displays the cabin image."""
+        """Test that the booking list view loads correctly
+           and displays booking details."""
         response = self.client.get(reverse("booking_list"))
         self.assertEqual(response.status_code, 200)
 
-        # Check if the cabin image is rendered (using the image URL)
+        # Check if the booking is displayed in the list
+        # (based on booking details, but not the image)
+
+        #  Cabin name
+        self.assertContains(response, self.booking.cabin.name)
+        #  Check-in date format
         self.assertContains(
-            response, "https://res.cloudinary.com/drrjh78y3/image/upload"
-        )
+            response, self.booking.check_in.strftime("%B %d, %Y"))
+        #  Check-out date format
+        self.assertContains(
+            response, self.booking.check_out.strftime("%B %d, %Y"))
+        #  Ensure user's name appears
+        self.assertContains(response, self.booking.user.username)
 
     def test_booking_create_view(self):
         """Test the booking creation page."""
